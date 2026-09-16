@@ -1,0 +1,31 @@
+# Env
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+backend/.venv/
+.pytest_cache/
+*.egg-info/
+
+# Node / Next.js
+node_modules/
+frontend/.next/
+frontend/out/
+frontend/node_modules/
+npm-debug.log*
+
+# Database
+db/*.db
+db/*.db-journal
+!db/.gitkeep
+
+# Test artifacts
+test/node_modules/
+test/test-results/
+test/playwright-report/
+
+# OS
+.DS_Store
+Thumbs.db
