@@ -11,6 +11,7 @@ import { TradeBar } from "./TradeBar";
 import { ChatPanel } from "./ChatPanel";
 import { usePriceStream } from "@/lib/usePriceStream";
 import { api, ApiError } from "@/lib/api";
+import { generateId } from "@/lib/id";
 import type { ChatMessage, Portfolio, Snapshot, WatchlistItem } from "@/lib/types";
 
 const POLL_INTERVAL_MS = 3000;
@@ -91,13 +92,13 @@ export function Dashboard() {
   };
 
   const handleSendChat = async (message: string) => {
-    const userMessage: ChatMessage = { id: crypto.randomUUID(), role: "user", content: message };
+    const userMessage: ChatMessage = { id: generateId(), role: "user", content: message };
     setMessages((prev) => [...prev, userMessage]);
     setChatLoading(true);
     try {
       const response = await api.sendChat(message);
       const assistantMessage: ChatMessage = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: "assistant",
         content: response.message,
         actions: response.actions,
@@ -110,7 +111,7 @@ export function Dashboard() {
       setMessages((prev) => [
         ...prev,
         {
-          id: crypto.randomUUID(),
+          id: generateId(),
           role: "assistant",
           content: err instanceof ApiError ? err.message : "Something went wrong. Please try again.",
         },

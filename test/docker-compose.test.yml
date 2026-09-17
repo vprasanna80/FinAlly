@@ -1,0 +1,34 @@
+services:
+  # Note: named "web", not "app" — "app" is a single-label hostname that
+  # collides with Chrome's HSTS preload list for the .app gTLD, which forces
+  # HTTPS and breaks plain-HTTP navigation from the Playwright browser.
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    environment:
+      - LLM_MOCK=true
+      - OPENROUTER_API_KEY=
+      - MASSIVE_API_KEY=
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')\"",
+        ]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+
+  playwright:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      web:
+        condition: service_healthy
+    environment:
+      - BASE_URL=http://web:8000
+    volumes:
+      - ./playwright-report:/app/playwright-report
+      - ./test-results:/app/test-results
