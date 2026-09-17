@@ -12,7 +12,7 @@ $ContainerName = "finally-app"
 $Port = 8000
 
 if (-not (Test-Path ".env")) {
-    Write-Host "No .env found — copying .env.example. Add your OPENROUTER_API_KEY before using real LLM chat." -ForegroundColor Yellow
+    Write-Host "No .env found - copying .env.example. Add your OPENROUTER_API_KEY before using real LLM chat." -ForegroundColor Yellow
     Copy-Item ".env.example" ".env"
 }
 
